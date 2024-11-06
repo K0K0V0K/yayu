@@ -3,17 +3,18 @@ package koko.yayu.freemarker;
 import java.util.List;
 
 import freemarker.template.TemplateMethodModelEx;
-import freemarker.template.TemplateModelException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AppIdMethod implements TemplateMethodModelEx {
+public class LinkTagMethod implements TemplateMethodModelEx {
 
     @Override
     public Object exec(List arguments) {
-        String appId = arguments.get(0).toString();
+        String path = arguments.get(0).toString();
+        String appId = arguments.get(1).toString();
         return String.format(
-            "<a href=\"/app/%s\"><span class=\"tag is-medium\">%s</span></a>",
+            "<a href=\"/%s/%s\"><span class=\"tag is-medium\">%s</span></a>",
+            path,
             appId,
             appId
         );

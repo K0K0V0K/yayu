@@ -16,7 +16,7 @@
       <a class="navbar-item">
           Applications
       </a>
-      <a class="navbar-item">
+      <a class="navbar-item" href="/nodes">
           Nodes
       </a>
       <div class="navbar-item has-dropdown is-hoverable">

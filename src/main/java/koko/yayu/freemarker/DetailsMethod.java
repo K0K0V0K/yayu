@@ -49,7 +49,7 @@ public class DetailsMethod implements TemplateMethodModelEx {
         if (value instanceof JSONObject) {
             return printJSONObject((JSONObject) value);
         }
-        if (List.of("finishedTime", "launchTime", "startedTime").contains(key)) {
+        if (List.of("finishedTime", "launchTime", "startedTime", "lastHealthUpdate").contains(key)) {
             Instant instant = Instant.ofEpochMilli(Long.parseLong(value.toString()));
             LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -74,7 +74,8 @@ public class DetailsMethod implements TemplateMethodModelEx {
                 .sorted()
                 .collect(Collectors.joining("\n"));
         }
-        return String.format("<span class=\"tag\"> %s </span>", value);
+        //return String.format("<span class=\"tag\"> %s </span>", value);
+        return value.toString();
     }
 
 }

@@ -3,7 +3,7 @@ package koko.yayu.config;
 import java.util.HashMap;
 import java.util.Map;
 
-import koko.yayu.freemarker.AppIdMethod;
+import koko.yayu.freemarker.LinkTagMethod;
 import koko.yayu.freemarker.DetailsMethod;
 import koko.yayu.freemarker.ProgressMethod;
 import koko.yayu.freemarker.TableHeadMethod;
@@ -24,7 +24,7 @@ public class FreeMarkerConfig {
         variables.put("time", new TimeMethod());
         variables.put("progress", new ProgressMethod());
         variables.put("tableHead", new TableHeadMethod());
-        variables.put("appId", new AppIdMethod());
+        variables.put("linkTag", new LinkTagMethod());
         variables.put("details", new DetailsMethod());
         configurer.setFreemarkerVariables(variables);
 

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import koko.yayu.util.YarnApiRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -16,9 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class Web {
-
-  String url = "TODO";
+public class AppController {
 
   @GetMapping("/")
   public String index(
@@ -26,19 +25,10 @@ public class Web {
       @RequestParam(defaultValue = "") String order
   ) {
     List<JSONObject> resp = YarnApiRequest.get(
-        url + "/ws/v1/cluster/apps",
-        jsonObject -> jsonArrayToList(jsonObject.getJSONObject("apps").getJSONArray("app"))
+        "/ws/v1/cluster/apps",
+        jsonObject -> YarnApiRequest.jsonArrayToList(jsonObject.getJSONObject("apps").getJSONArray("app"))
     );
-
-    if (StringUtils.hasLength(order)) {
-      String[] params = order.split("-");
-      resp.sort(Comparator.comparing(o -> o.get(params[0]).toString()));
-      if ("desc".equals(params[1])) {
-        Collections.reverse(resp);
-      }
-    }
-
-    resp = resp.stream().limit(25).collect(Collectors.toList());
+    YarnApiRequest.order(order, resp);
     model.addAttribute("apps", resp);
     return "index";
   }
@@ -49,16 +39,10 @@ public class Web {
       @PathVariable String appId
   ) {
     JSONObject resp = YarnApiRequest.get(
-        url + "/ws/v1/cluster/apps/" + appId,
+        "/ws/v1/cluster/apps/" + appId,
         jsonObject -> jsonObject.getJSONObject("app")
     );
-    model.addAttribute("app", resp);
-    return "app-details";
-  }
-
-  private List<JSONObject> jsonArrayToList(JSONArray jsonArray) {
-    return IntStream.range(0, jsonArray.length())
-        .mapToObj(jsonArray::getJSONObject)
-        .collect(Collectors.toList());
+    model.addAttribute("props", resp);
+    return "details";
   }
 }
