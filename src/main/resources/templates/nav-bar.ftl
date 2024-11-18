@@ -8,13 +8,10 @@
   <div class="navbar-menu">
     <div class="navbar-start">
       <a class="navbar-item" href="/">
-        Cluster Overview
+        Applications
       </a>
       <a class="navbar-item" href="/queues">
          Queues
-      </a>
-      <a class="navbar-item">
-          Applications
       </a>
       <a class="navbar-item" href="/nodes">
           Nodes
