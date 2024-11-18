@@ -15,21 +15,27 @@ import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class YarnApiRequest {
 
   public static <T> T get(String uri, Function<JSONObject, T> map){
     return WebClient.builder()
-        .baseUrl(YayuConfig.URL + uri)
-        .build()
-        .get()
-        .accept(MediaType.APPLICATION_XML)
-        .retrieve()
-        .bodyToMono(String.class)
-        .map(XML::toJSONObject)
-        .map(map)
-        .block();
+      .baseUrl(YayuConfig.URL + uri)
+      .exchangeStrategies(ExchangeStrategies.builder()
+        .codecs(configurer -> configurer
+          .defaultCodecs()
+          .maxInMemorySize(16 * 1024 * 1024))
+        .build())
+      .build()
+      .get()
+      .accept(MediaType.APPLICATION_XML)
+      .retrieve()
+      .bodyToMono(String.class)
+      .map(XML::toJSONObject)
+      .map(map)
+      .block();
   }
 
   public static List<JSONObject> jsonArrayToList(JSONArray jsonArray) {

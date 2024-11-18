@@ -10,7 +10,7 @@
       <a class="navbar-item" href="/">
         Cluster Overview
       </a>
-      <a class="navbar-item">
+      <a class="navbar-item" href="/queues">
          Queues
       </a>
       <a class="navbar-item">

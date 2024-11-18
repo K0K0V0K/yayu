@@ -35,8 +35,6 @@ public class DetailsMethod implements TemplateMethodModelEx {
     }
 
     private String createTableLine(String key, Object value) {
-        System.err.println(key);
-        System.err.println(value.getClass());
         return String.format("<tr> <td> %s </td> <td> %s </td> </tr>",
             key,
             createValueField(key, value));
