@@ -10,6 +10,9 @@
       <a class="navbar-item" href="/">
         Applications
       </a>
+      <a class="navbar-item" href="/scheduler">
+         Scheduler
+      </a>
       <a class="navbar-item" href="/queues">
          Queues
       </a>
