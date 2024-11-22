@@ -67,7 +67,9 @@ With YAYU, we offload UI responsibilities from the RM, improving performance and
 ## 💸 Do You Want to Donate?
 
 Thank you for the thought, but I don’t need financial contributions. Instead, there’s something even more valuable you can help with:
+
 **Getting this code into the official Hadoop repository!**
+
 Your support in reviewing, testing, or advocating for its inclusion would be greatly appreciated and would have a lasting impact on the project.
 Together, we can make this a reality for the Hadoop community! 🙌
 
