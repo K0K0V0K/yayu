@@ -10,8 +10,10 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http.headers(
-        headers -> headers.contentSecurityPolicy(csp -> csp.policyDirectives("script-src 'none';")))
+    return http
+      .headers(headers ->
+        headers.contentSecurityPolicy(csp ->
+          csp.policyDirectives("script-src 'none';")))
       .build();
   }
 }

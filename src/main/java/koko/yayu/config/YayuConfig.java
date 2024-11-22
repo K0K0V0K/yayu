@@ -1,5 +1,15 @@
 package koko.yayu.config;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
 public class YayuConfig {
-  public static final String URL = "http://ccycloud-3.somescbk.root.comops.site:8088/";
+
+  @Value("${yayu.mr-url}")
+  private String mrUrl;
+
+  public String getMrUrl() {
+    return mrUrl;
+  }
 }

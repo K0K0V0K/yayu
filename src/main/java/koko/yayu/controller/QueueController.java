@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import koko.yayu.service.ResourceManagerMonitor;
-import koko.yayu.util.YarnApiRequest;
+import koko.yayu.service.RMApiService;
+import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,41 +18,21 @@ import org.apache.commons.lang3.StringUtils;
 @Controller
 public class QueueController {
 
-  private final ResourceManagerMonitor resourceManagerMonitor;
+  private final RMApiService RMApiService;
 
-  public QueueController(ResourceManagerMonitor resourceManagerMonitor) {
-    this.resourceManagerMonitor = resourceManagerMonitor;
-  }
-
-  @GetMapping("/scheduler")
-  public String scheduler(Model model) {
-    JSONObject resp = resourceManagerMonitor.getScheduler();
-    model.addAttribute("props", resp);
-
-    model.addAttribute("health", YarnApiRequest.getJsonArray(resp, "health", "operationsInfo"));
-
-    model.addAttribute("details", YarnApiRequest.getJsonArray(resp, "health", "lastRunDetails"));
-
-    model.addAttribute("partitions",
-      YarnApiRequest.getJsonArray(resp, "capacities", "queueCapacitiesByPartition"));
-
-    model.addAttribute("queueAcls", YarnApiRequest.getJsonArray(resp, "queueAcls", "queueAcl"));
-
-    model.addAttribute("queueCapacityVectorInfo",
-      YarnApiRequest.getJsonArray(resp, "queueCapacityVectorInfo", "capacityVectorEntries"));
-
-    return "scheduler";
+  public QueueController(RMApiService RMApiService) {
+    this.RMApiService = RMApiService;
   }
 
   @GetMapping("/queues")
   public String queues(Model model) {
-    JSONObject resp = resourceManagerMonitor.getScheduler();
+    JSONObject resp = RMApiService.getScheduler();
 
-    List<JSONObject> topQueues = YarnApiRequest.getJsonArray(resp, "queues", "queue");
+    List<JSONObject> topQueues = YayuUtil.jsonListMapper("queues", "queue").apply(resp);
     Map<Integer, List<JSONObject>> queues = flatten(topQueues).collect(
       Collectors.groupingBy(queue -> StringUtils.countMatches(queue.getString("queuePath"), ".")));
     queues.replaceAll(
-      (level, lists) -> lists.stream().sorted(Comparator.comparing(o -> o.getString("queuePath")))
+      (_, lists) -> lists.stream().sorted(Comparator.comparing(o -> o.getString("queuePath")))
         .toList());
     model.addAttribute("queues", queues);
     return "queues";
@@ -63,7 +43,7 @@ public class QueueController {
       JSONObject leafs = queue.optJSONObject("queues");
       if (leafs != null && !leafs.isEmpty()) {
         queue.put("isLeaf", "NO");
-        return Stream.concat(flatten(YarnApiRequest.jsonArrayToList(leafs.getJSONArray("queue"))),
+        return Stream.concat(flatten(YayuUtil.jsonArrayToList(leafs.getJSONArray("queue"))),
           Stream.of(queue));
       }
       queue.put("isLeaf", "YES");

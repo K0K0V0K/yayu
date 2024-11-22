@@ -2,8 +2,8 @@ package koko.yayu.controller;
 
 import java.util.List;
 
-import koko.yayu.service.ResourceManagerMonitor;
-import koko.yayu.util.YarnApiRequest;
+import koko.yayu.service.RMApiService;
+import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,24 +14,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class NodeController {
 
-  private final ResourceManagerMonitor resourceManagerMonitor;
+  private final RMApiService RMApiService;
 
-  public NodeController(ResourceManagerMonitor resourceManagerMonitor) {
-    this.resourceManagerMonitor = resourceManagerMonitor;
+  public NodeController(RMApiService RMApiService) {
+    this.RMApiService = RMApiService;
   }
 
   @GetMapping("/nodes")
   public String nodes(Model model, @RequestParam(defaultValue = "") String order) {
-    List<JSONObject> resp = resourceManagerMonitor.getNodes();
-    YarnApiRequest.order(order, resp);
+    List<JSONObject> resp = RMApiService.getNodes();
+    YayuUtil.order(order, resp);
     model.addAttribute("nodes", resp);
     return "nodes";
   }
 
-  @GetMapping("/node/{node}")
-  public String nodeDetails(Model model, @PathVariable String node) {
-    JSONObject resp = YarnApiRequest.get("/ws/v1/cluster/nodes/" + node,
-      jsonObject -> jsonObject.getJSONObject("node"));
+  @GetMapping("/node/{nodeId}")
+  public String nodeDetails(Model model, @PathVariable String nodeId) {
+    JSONObject resp = RMApiService.getNode(nodeId);
     model.addAttribute("props", resp);
     return "details";
   }

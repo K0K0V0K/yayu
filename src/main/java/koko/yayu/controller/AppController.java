@@ -2,8 +2,8 @@ package koko.yayu.controller;
 
 import java.util.List;
 
-import koko.yayu.service.ResourceManagerMonitor;
-import koko.yayu.util.YarnApiRequest;
+import koko.yayu.service.RMApiService;
+import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,24 +14,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AppController {
 
-  private final ResourceManagerMonitor resourceManagerMonitor;
+  private final RMApiService RMApiService;
 
-  public AppController(ResourceManagerMonitor resourceManagerMonitor) {
-    this.resourceManagerMonitor = resourceManagerMonitor;
+  public AppController(RMApiService RMApiService) {
+    this.RMApiService = RMApiService;
   }
 
   @GetMapping("/")
   public String index(Model model, @RequestParam(defaultValue = "") String order) {
-    List<JSONObject> resp = resourceManagerMonitor.getApps();
-    YarnApiRequest.order(order, resp);
+    List<JSONObject> resp = RMApiService.getApps();
+    YayuUtil.order(order, resp);
     model.addAttribute("apps", resp);
     return "index";
   }
 
   @GetMapping("/app/{appId}")
   public String appDetails(Model model, @PathVariable String appId) {
-    JSONObject resp = YarnApiRequest.get("/ws/v1/cluster/apps/" + appId,
-      jsonObject -> jsonObject.getJSONObject("app"));
+    JSONObject resp = RMApiService.getApp(appId);
     model.addAttribute("props", resp);
     return "details";
   }
