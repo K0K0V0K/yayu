@@ -73,7 +73,7 @@ Together, we can make this a reality for the Hadoop community! 🙌
 
 ## 💡 What is Our Philosophy?
 1. **KISS** (Keep It Simple, Stupid) – Whatever it takes!
-2. **Reduce Dependencies** – Simplicity leads to maintainability.3
+2. **Reduce Dependencies** – Simplicity leads to maintainability.
 3. **Order of Priorities**:
    1. It should work.
    2. It should be maintainable.
