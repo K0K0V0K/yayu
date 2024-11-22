@@ -38,7 +38,9 @@ Fun fact: Check the `em-helpers` dependency in UI2's `package.json` for a glimps
 ## 🔒 Security
 
 The new UI prioritizes security. For example, take this line from the `SecurityConfig`:
+
 ` ... csp.policyDirectives("script-src 'none';"))) ...`
+
 What does this mean?
 - **No JavaScript Execution**: This policy prevents the UI from running any JavaScript code.
 - **Fewer JS Dependencies**: By not using JavaScript in the UI code, we eliminate many potential sources of CVEs.
