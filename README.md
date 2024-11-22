@@ -47,7 +47,7 @@ What does this mean?
 
 ## 🛠️ Maintainability
 
-Take a look at the `pom.xml`. How many dependencies are there? Just **7**! If we group all Spring dependencies into one, it's **only 3**.
+Take a look at the `pom.xml`. How many dependencies are there? Just **7**! If we group all Spring dependencies into one, it's **only 4**.
 Why is this important?
 
 **Fewer Dependencies = Easier Maintenance**: Less code to manage and fewer opportunities for vulnerabilities.
