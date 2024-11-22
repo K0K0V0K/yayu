@@ -38,7 +38,19 @@ public class YarnApiRequest {
       .block();
   }
 
-  public static List<JSONObject> jsonArrayToList(JSONArray jsonArray) {
+  public static List<JSONObject> getJsonArray(JSONObject jsonObject, String ... path) {
+    JSONObject current = jsonObject;
+    for (int i = 0; i < path.length - 1; ++i) {
+      current = current.getJSONObject(path[i]);
+    }
+    JSONArray array = current.optJSONArray(path[path.length - 1]);
+    return array != null
+      ? jsonArrayToList(array)
+      : Collections.singletonList(current.getJSONObject(path[path.length - 1]));
+  }
+
+
+    public static List<JSONObject> jsonArrayToList(JSONArray jsonArray) {
     return IntStream.range(0, jsonArray.length())
         .mapToObj(jsonArray::getJSONObject)
         .collect(Collectors.toList());
