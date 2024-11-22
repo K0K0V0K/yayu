@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class YayuApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(YayuApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(YayuApplication.class, args);
+  }
 
 }
