@@ -1,6 +1,9 @@
 package koko.yayu.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import koko.yayu.service.RMApiService;
 import koko.yayu.util.YayuUtil;
@@ -25,6 +28,10 @@ public class AppController {
     List<JSONObject> resp = RMApiService.getApps();
     YayuUtil.order(order, resp);
     model.addAttribute("apps", resp);
+    Map<String, Long> counts = resp.stream().collect(Collectors.groupingBy(
+      jsonObject -> jsonObject.getString("state"),
+      Collectors.counting()));
+    model.addAttribute("counts", new TreeMap<>(counts));
     return "index";
   }
 
