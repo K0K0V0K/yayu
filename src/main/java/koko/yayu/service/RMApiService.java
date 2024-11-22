@@ -85,7 +85,16 @@ public class RMApiService {
       .map(s -> s.concat(System.lineSeparator()));
   }
 
+  public List<JSONObject> getConfig() {
+    return get(rootClient, "/conf",
+      YayuUtil.jsonListMapper("configuration", "property"));
+  }
+
   private <T> T get(String path, Function<JSONObject, T> map) {
+    return get(client, path, map);
+  }
+
+  private <T> T get(WebClient client, String path, Function<JSONObject, T> map) {
     return client
       .get()
       .uri(path)

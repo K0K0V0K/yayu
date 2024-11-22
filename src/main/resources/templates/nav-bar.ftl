@@ -24,14 +24,8 @@
                     Tools
                 </a>
                 <div class="navbar-dropdown">
-                    <a class="navbar-item">
-                        Core Configuration
-                    </a>
-                    <a class="navbar-item">
-                        YARN Configuration
-                    </a>
-                    <a class="navbar-item">
-                        MapReduce Configuration
+                    <a class="navbar-item" href="/config">
+                        Configuration
                     </a>
                     <hr class="navbar-divider">
                     <a class="navbar-item" href="/logs">
