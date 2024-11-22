@@ -87,6 +87,44 @@
     </div>
 </div>
 
+
+<div class="columns">
+    <div class="column is-10  is-offset-1">
+        <article class="panel is-danger">
+            <p class="panel-heading">Attempts</p>
+            <a class="panel-block">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Attempt Id</th>
+                        <th>State</th>
+                        <th>Container Id</th>
+                        <th>Start</th>
+                        <th>Finish</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <#list attempts as attempt>
+                        <tr>
+                            <td>${attempt.id}</td>
+                            <td>${attempt.appAttemptState}</td>
+                            <td>${attempt.containerId}</td>
+                            <td>${time(attempt.startTime)}</td>
+                            <td>${time(attempt.finishedTime)}</td>
+                        </tr>
+                    </#list>
+                    </tbody>
+                </table>
+            </a>
+        </article>
+    </div>
+</div>
+
+
+<#list attempts as attempt>
+    ${attempt}
+</#list>
+
 <div class="columns">
     <div class="column is-10 is-offset-1">
         <div class="table-container">

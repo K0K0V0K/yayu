@@ -76,6 +76,11 @@ public class RMApiService {
     return get("cluster/apps/" + appId, YayuUtil.jsonObjectMapper("app"));
   }
 
+  public List<JSONObject> getAttempts(String appId) {
+    return get("/cluster/apps/" + appId + "/appattempts",
+      YayuUtil.jsonListMapper("appAttempts", "appAttempt"));
+  }
+
   public JSONObject getNode(String nodeId) {
     return get("cluster/nodes/" + nodeId, YayuUtil.jsonObjectMapper("node"));
   }

@@ -62,7 +62,7 @@
         <article class="panel is-danger">
             <p class="panel-heading">Health - Operation Info</p>
             <a class="panel-block">
-                <table class="table" style="margin-left: 1em;">
+                <table class="table">
                     <thead>
                     <tr>
                         <th>Operation</th>

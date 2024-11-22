@@ -39,6 +39,8 @@ public class AppController {
   public String appDetails(Model model, @PathVariable String appId) {
     JSONObject resp = RMApiService.getApp(appId);
     model.addAttribute("props", resp);
+    List<JSONObject> attempts = RMApiService.getAttempts(appId);
+    model.addAttribute("attempts", attempts);
     return "app-details";
   }
 }
