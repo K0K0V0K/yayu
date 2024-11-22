@@ -52,6 +52,7 @@ Why is this important?
 **Highly Trusted Libraries**:
 - **Spring**: Likely to outlive most other frameworks.
 - **Apache Commons and org.json**: Rock-solid libraries trusted by the developer community.
+- **Freemarker**: Good old templating engine under maintenance of Apache community.
 - Minimal UI Framework: Using **Bulma.css**, a lightweight and JavaScript-free CSS framework with ~50k GitHub stars, ensures a clean, modern design without unnecessary complexity.
 
 ## ⚡ Performance
