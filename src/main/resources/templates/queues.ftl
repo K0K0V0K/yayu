@@ -22,19 +22,19 @@
                         <th>Absolute Max Capacity</th>
                         <th>Configured Capacity</th>
                         <th>Configured Max Capacity</th>
-                        <th>Leaf</th>
+                        <th>Children</th>
                     </tr>
                     </thead>
                     <tbody>
                     <#list lists as queue>
                         <tr>
-                            <td>${queue.queuePath}</td>
+                            <td>${linkTag("queue", queue.queuePath)}</td>
                             <td>${queue.absoluteUsedCapacity}</td>
                             <td>${queue.absoluteCapacity}</td>
                             <td>${queue.absoluteMaxCapacity}</td>
                             <td>${queue.capacity}</td>
                             <td>${queue.maxCapacity}</td>
-                            <td>${queue.isLeaf}</td>
+                            <td>${queue.children}</td>
                         </tr>
                     </#list>
                     </tbody>
