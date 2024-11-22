@@ -17,7 +17,7 @@
                                         +===============================================+
 ```
 
-# What's this? Whats this?
+# What's this? What's this?
 
 Well, this is **Yet Another YARN UI** for the Hadoop YARN Resource Manager following the original UI (introduced in **2013**) and UI2 (introduced in **2015**).
 
@@ -58,10 +58,10 @@ Why is this important?
 Why should users directly access the Resource Manager (RM)? This is problematic for two reasons:
 
 1. **Security**: Direct access exposes the RM to potential vulnerabilities.
-1. **Load Management**:
-- - Imagine the RM is under heavy load.
-- - If you use the UI2 for debugging, the RM has to serve jQuery static resources alongside its workload.
-- - This can worsen the situation and strain the RM even more.
+2. **Load Management**:
+   - Imagine the RM is under heavy load.
+   - If you use the UI2 for debugging, the RM has to serve jQuery static resources alongside its workload.
+   - This can worsen the situation and strain the RM even more.
 With YAYU, we offload UI responsibilities from the RM, improving performance and reducing risk.
 
 ## 💸 Do You Want to Donate?
@@ -73,9 +73,9 @@ Together, we can make this a reality for the Hadoop community! 🙌
 
 ## 💡 What is Our Philosophy?
 1. **KISS** (Keep It Simple, Stupid) – Whatever it takes!
-1. **Reduce Dependencies** – Simplicity leads to maintainability.
-1. **Order of Priorities**:
-1. 1. It should work.
-1. 1. It should be maintainable.
-1. 1. It should be secure.
-1. 1. Take care of performance (but not at the cost of the above).
+2. **Reduce Dependencies** – Simplicity leads to maintainability.3
+3. **Order of Priorities**:
+   1. It should work.
+   2. It should be maintainable.
+   3. It should be secure.
+   4. Take care of performance (but not at the cost of the above).
