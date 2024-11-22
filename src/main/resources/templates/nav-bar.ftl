@@ -34,7 +34,7 @@
                         MapReduce Configuration
                     </a>
                     <hr class="navbar-divider">
-                    <a class="navbar-item">
+                    <a class="navbar-item" href="/logs">
                         Logs
                     </a>
                 </div>

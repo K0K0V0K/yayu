@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 
 @Service
 public class RMApiService {
@@ -21,6 +22,7 @@ public class RMApiService {
   private List<JSONObject> apps;
 
   private final WebClient client;
+  private final WebClient rootClient;
 
   public RMApiService(YayuConfig config) {
     this.client = WebClient.builder()
@@ -29,6 +31,13 @@ public class RMApiService {
         ExchangeStrategies.builder()
           .codecs(configurer ->
             configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024)).build())
+      .build();
+    this.rootClient =  WebClient.builder()
+      .baseUrl(config.getMrUrl())
+      .exchangeStrategies(
+        ExchangeStrategies.builder()
+          .codecs(configurer ->
+            configurer.defaultCodecs().maxInMemorySize(512 * 1024 * 1024)).build())
       .build();
   }
 
@@ -60,6 +69,20 @@ public class RMApiService {
 
   public JSONObject getNode(String nodeId) {
     return get("cluster/nodes/" + nodeId, YayuUtil.jsonObjectMapper("node"));
+  }
+
+  public String getLogs() {
+    String raw = rootClient.get().uri("/logs/")
+      .retrieve().bodyToMono(String.class).block();
+    return raw.substring(raw.indexOf("<tbody>"), raw.indexOf("</tbody"));
+  }
+
+  public Flux<String> getLog(String fileName) {
+    return rootClient.get()
+      .uri("/logs/" + fileName)
+      .retrieve()
+      .bodyToFlux(String.class)
+      .map(s -> s.concat(System.lineSeparator()));
   }
 
   private <T> T get(String path, Function<JSONObject, T> map) {

@@ -9,7 +9,7 @@
 <div class="columns">
     <div class="column is-10 is-offset-1">
         <div class="table-container">
-            <table class="table" style="margin-left: 1em;">
+            <table class="table">
                 <thead>
                 <tr>
                     ${tableHead("id", "applicationType", "name", "user", "state", "queue", "progress", "startedTime")}
