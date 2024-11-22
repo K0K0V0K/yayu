@@ -37,14 +37,13 @@
 
         <div class="navbar-end">
             <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary">
-                        <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light">
-                        Log in
-                    </a>
-                </div>
+                <b>Version:</b> ${clusterInfo.resourceManagerVersion}
+            </div>
+            <div class="navbar-item">
+                <b>Started:</b> ${time(clusterInfo.startedOn)}
+            </div>
+            <div class="navbar-item">
+                <b>HA:</b> ${clusterInfo.haState}
             </div>
         </div>
     </div>

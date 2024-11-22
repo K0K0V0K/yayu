@@ -15,6 +15,9 @@ public class YayuUtil {
 
   public static Function<JSONObject, JSONObject> jsonObjectMapper(String ... paths) {
     return jsonObject -> {
+      if (paths == null || paths.length == 0) {
+        return jsonObject;
+      }
       JSONObject re = jsonObject;
       for (String path : paths) {
         re = re.getJSONObject(path);

@@ -18,6 +18,7 @@ import reactor.core.publisher.Flux;
 public class RMApiService {
 
   private JSONObject scheduler;
+  private JSONObject clusterInfo;
   private List<JSONObject> nodes;
   private List<JSONObject> apps;
 
@@ -49,6 +50,10 @@ public class RMApiService {
       YayuUtil.jsonListMapper("nodes", "node"));
     apps = get("cluster/apps",
       YayuUtil.jsonListMapper("apps", "app"));
+    apps = get("cluster/apps",
+      YayuUtil.jsonListMapper("apps", "app"));
+    clusterInfo = get("cluster",
+      YayuUtil.jsonObjectMapper("clusterInfo"));
   }
 
   public JSONObject getScheduler() {
@@ -61,6 +66,10 @@ public class RMApiService {
 
   public List<JSONObject> getApps() {
     return apps;
+  }
+
+  public JSONObject getClusterInfo() {
+    return clusterInfo;
   }
 
   public JSONObject getApp(String appId) {
