@@ -3,6 +3,7 @@ package koko.yayu.util;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -34,7 +35,10 @@ public class YayuUtil {
     return jsonObject -> {
       JSONObject re = jsonObject;
       for (int i = 0; i < paths.length - 1; ++i) {
-        re = re.getJSONObject(paths[i]);
+        re = re.optJSONObject(paths[i]);
+        if (re == null) {
+          return Collections.emptyList();
+        }
       }
       JSONArray array = re.optJSONArray(paths[paths.length - 1]);
       return array != null

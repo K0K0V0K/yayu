@@ -9,68 +9,10 @@
 
 <div class="columns">
     <div class="column is-4 is-offset-1">
-        <article class="panel is-link">
-            <p class="panel-heading">Info - ${props.id}</p>
-            <a class="panel-block">
-                Application Type: ${props.applicationType}
-            </a>
-            <a class="panel-block">
-                Name: ${props.name}
-            </a>
-            <a class="panel-block">
-                Application Tags: ${props.applicationTags}
-            </a>
-            <a class="panel-block">
-                Queue: ${props.queue}
-            </a>
-            <a class="panel-block">
-                User: ${props.user}
-            </a>
-            <a class="panel-block">
-                State: ${props.state}
-            </a>
-            <a class="panel-block">
-                Final Status: ${props.finalStatus}
-            </a>
-            <a class="panel-block">
-                Start: ${time(props.startedTime)}
-            </a>
-            <a class="panel-block">
-                Finish: ${time(props.finishedTime)}
-            </a>
-        </article>
+        ${info}
     </div>
     <div class="column is-6">
-        <article class="panel is-info">
-            <p class="panel-heading">Capacity</p>
-            <a class="panel-block">
-                Allocated Memory: ${props.allocatedMB} MB
-            </a>
-            <a class="panel-block">
-                Allocated vCores: ${props.allocatedVCores}
-            </a>
-            <a class="panel-block">
-                Memory seconds: ${props.memorySeconds}
-            </a>
-            <a class="panel-block">
-                vCore seconds: ${props.vcoreSeconds}
-            </a>
-            <a class="panel-block">
-                Preempted VCores: ${props.preemptedResourceVCores}
-            </a>
-            <a class="panel-block">
-                Preempted Memory: ${props.preemptedResourceMB} MB
-            </a>
-            <a class="panel-block">
-                Preempted vCore Seconds: ${props.preemptedVcoreSeconds}
-            </a>
-            <a class="panel-block">
-                Preempted Memory Seconds: ${props.preemptedMemorySeconds}
-            </a>
-            <a class="panel-block">
-                Priority: ${props.priority}
-            </a>
-        </article>
+        ${capacity}
     </div>
 </div>
 
@@ -104,15 +46,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <#list attempts as attempt>
-                        <tr>
-                            <td>${attempt.id}</td>
-                            <td>${attempt.appAttemptState}</td>
-                            <td>${attempt.containerId}</td>
-                            <td>${time(attempt.startTime)}</td>
-                            <td>${time(attempt.finishedTime)}</td>
-                        </tr>
-                    </#list>
+                    ${attempts}
+<#--                    <#list attempts as attempt>-->
+<#--                        <tr>-->
+<#--                            <td>${attempt.id}</td>-->
+<#--                            <td>${attempt.appAttemptState}</td>-->
+<#--                            <td>${attempt.containerId}</td>-->
+<#--                            <td>${time(attempt.startTime)}</td>-->
+<#--                            <td>${time(attempt.finishedTime)}</td>-->
+<#--                        </tr>-->
+<#--                    </#list>-->
                     </tbody>
                 </table>
             </a>
