@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import koko.yayu.component.ComponentGenerator;
-import koko.yayu.component.StatisticsGenerator;
+import koko.yayu.generator.ComponentGenerator;
+import koko.yayu.generator.StatisticsGenerator;
 import koko.yayu.service.ApiService;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;

@@ -1,21 +1,12 @@
-package koko.yayu.component;
+package koko.yayu.generator;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import freemarker.template.TemplateMethodModelEx;
-import freemarker.template.TemplateModelException;
-import koko.yayu.config.FreeMarkerConfig;
 import org.json.JSONObject;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.text.WordUtils;
 
 public class StatisticsGenerator {
 
@@ -41,7 +32,7 @@ public class StatisticsGenerator {
       + String.format("TOP %s %s", size, title)
       + "</p></div><div class=\"message-body\"><table class=\"table is-striped is-fullwidth\">";
     for (Pair<String, Integer> pair : stats) {
-      re += "<tr class=\"is-dark\"><td>" + pair.getKey() + "</td><td>" + pair.getValue() + "</td></tr>";
+      re += "<tr><td>" + pair.getKey() + "</td><td>" + pair.getValue() + "</td></tr>";
     }
     re += "</table></div></article>";
     return re;

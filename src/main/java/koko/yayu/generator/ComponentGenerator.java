@@ -1,11 +1,10 @@
-package koko.yayu.component;
+package koko.yayu.generator;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;

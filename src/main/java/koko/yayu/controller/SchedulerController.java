@@ -1,6 +1,6 @@
 package koko.yayu.controller;
 
-import koko.yayu.component.ComponentGenerator;
+import koko.yayu.generator.ComponentGenerator;
 import koko.yayu.service.ApiService;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
