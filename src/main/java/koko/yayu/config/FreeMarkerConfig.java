@@ -6,6 +6,7 @@ import java.util.Map;
 import freemarker.template.TemplateMethodModelEx;
 import koko.yayu.freemarker.AppStateMethod;
 import koko.yayu.freemarker.DetailsMethod;
+import koko.yayu.freemarker.HaStateMethod;
 import koko.yayu.freemarker.LinkTagMethod;
 import koko.yayu.freemarker.ProgressMethod;
 import koko.yayu.freemarker.TableHeadMethod;
@@ -23,7 +24,8 @@ public class FreeMarkerConfig {
     "tableHead", new TableHeadMethod(),
     "linkTag", new LinkTagMethod(),
     "details", new DetailsMethod(),
-    "appState", new AppStateMethod()
+    "appState", new AppStateMethod(),
+    "haState", new HaStateMethod()
   );
 
   @Bean

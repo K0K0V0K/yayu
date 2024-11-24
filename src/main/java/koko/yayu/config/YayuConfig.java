@@ -1,5 +1,7 @@
 package koko.yayu.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -7,9 +9,9 @@ import org.springframework.context.annotation.Configuration;
 public class YayuConfig {
 
   @Value("${yayu.mr-url}")
-  private String mrUrl;
+  private List<String> mrUrl;
 
-  public String getMrUrl() {
+  public List<String> getMrUrl() {
     return mrUrl;
   }
 }

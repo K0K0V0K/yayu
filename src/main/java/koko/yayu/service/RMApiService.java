@@ -20,7 +20,6 @@ import reactor.netty.http.client.HttpClient;
 public class RMApiService {
 
   private JSONObject scheduler;
-  private JSONObject clusterInfo;
   private List<JSONObject> nodes;
   private List<JSONObject> apps;
 
@@ -29,14 +28,14 @@ public class RMApiService {
 
   public RMApiService(YayuConfig config) {
     this.client = WebClient.builder()
-      .baseUrl(config.getMrUrl() + "/ws/v1/")
+      .baseUrl(config.getMrUrl().get(0) + "/ws/v1/")
       .exchangeStrategies(
         ExchangeStrategies.builder()
           .codecs(configurer ->
             configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024)).build())
       .build();
     this.rootClient =  WebClient.builder()
-      .baseUrl(config.getMrUrl())
+      .baseUrl(config.getMrUrl().get(0) + "/ws/v1/")
       .exchangeStrategies(
         ExchangeStrategies.builder()
           .codecs(configurer ->
@@ -47,15 +46,13 @@ public class RMApiService {
   @Scheduled(fixedRate = 1000)
   private void pollScheduler() {
     scheduler = get("cluster/scheduler",
-      YayuUtil.jsonObjectMapper("scheduler", "schedulerInfo"));
+        YayuUtil.jsonObjectMapper("scheduler", "schedulerInfo"));
     nodes = get("cluster/nodes",
       YayuUtil.jsonListMapper("nodes", "node"));
     apps = get("cluster/apps",
       YayuUtil.jsonListMapper("apps", "app"));
     apps = get("cluster/apps",
       YayuUtil.jsonListMapper("apps", "app"));
-    clusterInfo = get("cluster",
-      YayuUtil.jsonObjectMapper("clusterInfo"));
   }
 
   public JSONObject getScheduler() {
@@ -71,7 +68,7 @@ public class RMApiService {
   }
 
   public JSONObject getClusterInfo() {
-    return clusterInfo;
+    return get("cluster", YayuUtil.jsonObjectMapper("clusterInfo"));
   }
 
   public JSONObject getApp(String appId) {

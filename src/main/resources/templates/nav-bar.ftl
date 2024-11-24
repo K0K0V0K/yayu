@@ -43,7 +43,10 @@
                 <b>Started:</b> ${time(clusterInfo.startedOn)}
             </div>
             <div class="navbar-item">
-                <b>HA:</b> ${clusterInfo.haState}
+                <#list haStatuses as url, state>
+                    ${haState(url, state)}
+                </#list>
+                ${haState("http://standby:9090", "STANDBY")}
             </div>
         </div>
     </div>
