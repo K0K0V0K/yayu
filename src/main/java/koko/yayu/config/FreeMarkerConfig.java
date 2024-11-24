@@ -3,6 +3,7 @@ package koko.yayu.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import freemarker.template.TemplateMethodModelEx;
 import koko.yayu.freemarker.AppStateMethod;
 import koko.yayu.freemarker.DetailsMethod;
 import koko.yayu.freemarker.LinkTagMethod;
@@ -16,20 +17,20 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 @Configuration
 public class FreeMarkerConfig {
 
+  public static final Map<String, Object> methods = Map.of(
+    "time", new TimeMethod(),
+    "progress", new ProgressMethod(),
+    "tableHead", new TableHeadMethod(),
+    "linkTag", new LinkTagMethod(),
+    "details", new DetailsMethod(),
+    "appState", new AppStateMethod()
+  );
+
   @Bean
   public FreeMarkerConfigurer freeMarkerConfigurer() {
     FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
     configurer.setTemplateLoaderPath("classpath:/templates");
-
-    Map<String, Object> variables = new HashMap<>();
-    variables.put("time", new TimeMethod());
-    variables.put("progress", new ProgressMethod());
-    variables.put("tableHead", new TableHeadMethod());
-    variables.put("linkTag", new LinkTagMethod());
-    variables.put("details", new DetailsMethod());
-    variables.put("appState", new AppStateMethod());
-    configurer.setFreemarkerVariables(variables);
-
+    configurer.setFreemarkerVariables(methods);
     return configurer;
   }
 }

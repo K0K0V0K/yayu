@@ -51,8 +51,8 @@ public class AppController {
       .addField( "/user")
       .addField( "/state")
       .addField( "/finalStatus")
-      .addField( "/startedTime")
-      .addField( "/finishedTime")
+      .addField( "/startedTime", "Start", "time")
+      .addField( "/finishedTime", "End", "time")
       .generate(resp)
     );
 
