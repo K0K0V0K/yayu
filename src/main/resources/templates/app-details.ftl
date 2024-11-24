@@ -43,48 +43,25 @@
                         <th>Container Id</th>
                         <th>Start</th>
                         <th>Finish</th>
+                        <th>Logs</th>
                     </tr>
                     </thead>
                     <tbody>
-                    ${attempts}
-<#--                    <#list attempts as attempt>-->
-<#--                        <tr>-->
-<#--                            <td>${attempt.id}</td>-->
-<#--                            <td>${attempt.appAttemptState}</td>-->
-<#--                            <td>${attempt.containerId}</td>-->
-<#--                            <td>${time(attempt.startTime)}</td>-->
-<#--                            <td>${time(attempt.finishedTime)}</td>-->
-<#--                        </tr>-->
-<#--                    </#list>-->
+                    <#list attempts as attempt>
+                        <tr>
+                            <td>${attempt.appAttemptId}</td>
+                            <td>${attempt.appAttemptState}</td>
+                            <td>${attempt.containerId}</td>
+                            <td>${time(attempt.startTime)}</td>
+                            <td>${time(attempt.finishedTime)}</td>
+                            <td><a href="${attempt.logsLink}">Logs</a></td>
+                        </tr>
+                    </#list>
                     </tbody>
                 </table>
             </a>
         </article>
     </div>
 </div>
-
-
-<#list attempts as attempt>
-    ${attempt}
-</#list>
-
-<div class="columns">
-    <div class="column is-10 is-offset-1">
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th> Property Name</th>
-                    <th> Property Value</th>
-                </tr>
-                </thead>
-                <tbody>
-                ${details(props)}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
 </body>
 </html>

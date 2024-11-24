@@ -70,8 +70,7 @@ public class AppController {
       .addField("/priority")
       .generate(resp)
     );
-
-
+    model.addAttribute("appId", appId);
     List<JSONObject> attempts = RMApiService.getAttempts(appId);
     model.addAttribute("attempts", attempts);
     return "app-details";
