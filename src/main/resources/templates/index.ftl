@@ -23,6 +23,17 @@
                 </div>
             </div>
         </article>
+        <div class="columns">
+            <div class="column">
+                ${topUser}
+            </div>
+            <div class="column">
+                ${topQueue}
+            </div>
+            <div class="column">
+                ${topAppType}
+            </div>
+        </div>
         <div class="table-container">
             <table class="table">
                 <thead>

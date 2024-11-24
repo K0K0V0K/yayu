@@ -1,7 +1,6 @@
 package koko.yayu.config;
 
 import koko.yayu.service.ActiveRMService;
-import koko.yayu.service.RMApiService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;

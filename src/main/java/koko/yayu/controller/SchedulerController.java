@@ -1,7 +1,7 @@
 package koko.yayu.controller;
 
 import koko.yayu.component.ComponentGenerator;
-import koko.yayu.service.RMApiService;
+import koko.yayu.service.ApiService;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class SchedulerController {
 
-  private final RMApiService RMApiService;
+  private final ApiService apiService;
 
-  public SchedulerController(RMApiService RMApiService) {
-    this.RMApiService = RMApiService;
+  public SchedulerController(ApiService apiService) {
+    this.apiService = apiService;
   }
 
   @GetMapping("/scheduler")
   public String scheduler(Model model) {
-    JSONObject resp = RMApiService.getScheduler();
+    JSONObject resp = apiService.getScheduler();
     model.addAttribute("props", resp);
 
     model.addAttribute("info", ComponentGenerator.create()

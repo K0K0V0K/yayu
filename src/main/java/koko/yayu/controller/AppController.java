@@ -6,7 +6,8 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import koko.yayu.component.ComponentGenerator;
-import koko.yayu.service.RMApiService;
+import koko.yayu.component.StatisticsGenerator;
+import koko.yayu.service.ApiService;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -18,27 +19,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AppController {
 
-  private final RMApiService RMApiService;
+  private final ApiService apiService;
 
-  public AppController(RMApiService RMApiService) {
-    this.RMApiService = RMApiService;
+  public AppController(ApiService apiService) {
+    this.apiService = apiService;
   }
 
   @GetMapping("/")
   public String index(Model model, @RequestParam(defaultValue = "") String order) {
-    List<JSONObject> resp = RMApiService.getApps();
+    List<JSONObject> resp = apiService.getApps();
     YayuUtil.order(order, resp);
     model.addAttribute("apps", resp);
     Map<String, Long> counts = resp.stream().collect(Collectors.groupingBy(
       jsonObject -> jsonObject.getString("state"),
       Collectors.counting()));
+
+    model.addAttribute("topUser",
+      new StatisticsGenerator("User", 5, "user", resp).generate());
+    model.addAttribute("topQueue",
+      new StatisticsGenerator("Queue", 5, "queue", resp).generate());
+    model.addAttribute("topAppType",
+      new StatisticsGenerator("Application Type", 5, "applicationType", resp).generate());
+
     model.addAttribute("counts", new TreeMap<>(counts));
     return "index";
   }
 
   @GetMapping("/app/{appId}")
   public String appDetails(Model model, @PathVariable String appId) {
-    JSONObject resp = RMApiService.getApp(appId);
+    JSONObject resp = apiService.getApp(appId);
     model.addAttribute("props", resp);
 
     model.addAttribute("info", ComponentGenerator.create()
@@ -71,7 +80,7 @@ public class AppController {
       .generate(resp)
     );
     model.addAttribute("appId", appId);
-    List<JSONObject> attempts = RMApiService.getAttempts(appId);
+    List<JSONObject> attempts = apiService.getAttempts(appId);
     model.addAttribute("attempts", attempts);
     return "app-details";
   }

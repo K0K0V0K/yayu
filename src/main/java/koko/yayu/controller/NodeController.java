@@ -2,7 +2,7 @@ package koko.yayu.controller;
 
 import java.util.List;
 
-import koko.yayu.service.RMApiService;
+import koko.yayu.service.ApiService;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class NodeController {
 
-  private final RMApiService RMApiService;
+  private final ApiService apiService;
 
-  public NodeController(RMApiService RMApiService) {
-    this.RMApiService = RMApiService;
+  public NodeController(ApiService apiService) {
+    this.apiService = apiService;
   }
 
   @GetMapping("/nodes")
   public String nodes(Model model, @RequestParam(defaultValue = "") String order) {
-    List<JSONObject> resp = RMApiService.getNodes();
+    List<JSONObject> resp = apiService.getNodes();
     YayuUtil.order(order, resp);
     model.addAttribute("nodes", resp);
     return "nodes";
@@ -30,7 +30,7 @@ public class NodeController {
 
   @GetMapping("/node/{nodeId}")
   public String nodeDetails(Model model, @PathVariable String nodeId) {
-    JSONObject resp = RMApiService.getNode(nodeId);
+    JSONObject resp = apiService.getNode(nodeId);
     model.addAttribute("props", resp);
     return "details";
   }

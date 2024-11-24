@@ -1,25 +1,22 @@
 package koko.yayu.controller;
 
-import koko.yayu.service.RMApiService;
-import koko.yayu.util.YayuUtil;
-import org.json.JSONObject;
+import koko.yayu.service.ApiService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class LogController {
 
-  private final RMApiService RMApiService;
+  private final ApiService apiService;
 
-  public LogController(RMApiService RMApiService) {
-    this.RMApiService = RMApiService;
+  public LogController(ApiService apiService) {
+    this.apiService = apiService;
   }
 
   @GetMapping("/logs")
   public String scheduler(Model model) {
-    String resp = RMApiService.getLogs();
+    String resp = apiService.getLogs();
     model.addAttribute("props", resp);
     return "logs";
   }

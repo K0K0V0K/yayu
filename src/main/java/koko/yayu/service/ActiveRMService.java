@@ -32,8 +32,7 @@ public class ActiveRMService {
     System.err.println(rmUrls);
   }
 
-  @Scheduled(fixedRate = 1000)
-  private void pollScheduler() {
+  public void refresh() {
     for (URI rmUrl : rmUrls) {
       try {
         statuses.put(rmUrl, WebClient
@@ -49,7 +48,6 @@ public class ActiveRMService {
           .map(jsonObject -> jsonObject.getJSONObject("clusterInfo"))
           .block());
       } catch (Exception e) {
-        System.err.println(e);
         //throw new RuntimeException(e);
         statuses.put(rmUrl, null);
       }
@@ -58,10 +56,9 @@ public class ActiveRMService {
 
   public URI getActive() {
     return statuses.entrySet().stream()
-      .filter(
-      entry -> entry.getValue() != null
-        && "ACTIVE".equals(entry.getValue().getString("haState"))
-      ).findFirst().orElseThrow(RuntimeException::new).getKey();
+      .filter(entry -> entry.getValue() != null)
+      .filter(entry -> "ACTIVE".equals(entry.getValue().getString("haState")))
+      .findFirst().orElseThrow(RuntimeException::new).getKey();
   }
 
   public JSONObject getActiveStatus() {

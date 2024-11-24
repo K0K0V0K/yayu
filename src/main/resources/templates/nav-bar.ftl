@@ -46,7 +46,6 @@
                 <#list haStatuses as url, state>
                     ${haState(url, state)}
                 </#list>
-                ${haState("http://standby:9090", "STANDBY")}
             </div>
         </div>
     </div>
