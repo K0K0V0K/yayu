@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import koko.yayu.service.ApiService;
+import koko.yayu.service.apiservice.RestApiService;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -19,15 +19,15 @@ import org.apache.commons.lang3.StringUtils;
 @Controller
 public class QueueController {
 
-  private final ApiService apiService;
+  private final RestApiService restApiService;
 
-  public QueueController(ApiService apiService) {
-    this.apiService = apiService;
+  public QueueController(RestApiService restApiService) {
+    this.restApiService = restApiService;
   }
 
   @GetMapping("/queues")
   public String queues(Model model) {
-    JSONObject resp = apiService.getScheduler();
+    JSONObject resp = restApiService.getScheduler();
     List<JSONObject> topQueues = YayuUtil.mapJsonList(resp, "queues", "queue");
     Map<Integer, List<JSONObject>> queues = flatten(topQueues)
       .collect(Collectors.groupingBy(queue ->
@@ -40,7 +40,7 @@ public class QueueController {
 
   @GetMapping("/queue/{queuePath}")
   public String queues(Model model, @PathVariable String queuePath) {
-    JSONObject resp = apiService.getScheduler();
+    JSONObject resp = restApiService.getScheduler();
     List<JSONObject> topQueues = YayuUtil.mapJsonList(resp, "queues", "queue");
     JSONObject found = flatten(topQueues)
       .filter(queue -> queuePath.equals(queue.getString("queuePath")))

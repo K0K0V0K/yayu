@@ -11,7 +11,6 @@ import koko.yayu.config.YayuConfig;
 import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -21,6 +20,7 @@ public class ActiveRMService {
   private final List<URI> rmUrls;
   private final Map<URI, JSONObject> statuses = new HashMap<>();
 
+
   public ActiveRMService(YayuConfig yayuConfig) {
     this.rmUrls = yayuConfig.getMrUrl().stream().map(url -> {
       try {
@@ -29,7 +29,6 @@ public class ActiveRMService {
         throw new Error(e);
       }
     }).toList();
-    System.err.println(rmUrls);
   }
 
   public void refresh() {

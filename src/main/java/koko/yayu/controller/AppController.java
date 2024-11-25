@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import koko.yayu.generator.ComponentGenerator;
 import koko.yayu.generator.StatisticsGenerator;
-import koko.yayu.service.ApiService;
+import koko.yayu.service.apiservice.RestApiService;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -19,15 +19,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AppController {
 
-  private final ApiService apiService;
+  private final RestApiService restApiService;
 
-  public AppController(ApiService apiService) {
-    this.apiService = apiService;
+  public AppController(RestApiService restApiService) {
+    this.restApiService = restApiService;
   }
 
   @GetMapping("/")
   public String index(Model model, @RequestParam(defaultValue = "") String order) {
-    List<JSONObject> resp = apiService.getApps();
+    List<JSONObject> resp = restApiService.getApps();
     YayuUtil.order(order, resp);
     model.addAttribute("apps", resp);
     Map<String, Long> counts = resp.stream().collect(Collectors.groupingBy(
@@ -47,7 +47,7 @@ public class AppController {
 
   @GetMapping("/app/{appId}")
   public String appDetails(Model model, @PathVariable String appId) {
-    JSONObject resp = apiService.getApp(appId);
+    JSONObject resp = restApiService.getApp(appId);
     model.addAttribute("props", resp);
 
     model.addAttribute("info", ComponentGenerator.create()
@@ -80,7 +80,7 @@ public class AppController {
       .generate(resp)
     );
     model.addAttribute("appId", appId);
-    List<JSONObject> attempts = apiService.getAttempts(appId);
+    List<JSONObject> attempts = restApiService.getAttempts(appId);
     model.addAttribute("attempts", attempts);
     return "app-details";
   }

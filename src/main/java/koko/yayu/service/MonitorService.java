@@ -1,5 +1,7 @@
 package koko.yayu.service;
 
+import koko.yayu.service.apiservice.NativeApiService;
+import koko.yayu.service.apiservice.RestApiService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -7,17 +9,24 @@ import org.springframework.stereotype.Service;
 public class MonitorService {
 
   private final ActiveRMService activeRMService;
-  private final ApiService apiService;
+  private final RestApiService restApiService;
+  private final NativeApiService nativeApiService;
 
-  public MonitorService(ActiveRMService activeRMService, ApiService apiService) {
+  public MonitorService(
+    ActiveRMService activeRMService,
+    RestApiService restApiService,
+    NativeApiService nativeApiService
+  ) {
     this.activeRMService = activeRMService;
-    this.apiService = apiService;
+    this.restApiService = restApiService;
+    this.nativeApiService = nativeApiService;
   }
 
   @Scheduled(fixedRate = 1000)
   private void poll() {
     activeRMService.refresh();
-    apiService.setActive(activeRMService.getActive());
-    apiService.refresh();
+    restApiService.setActive(activeRMService.getActive());
+    nativeApiService.setActive(activeRMService.getActive());
+    restApiService.refresh();
   }
 }
