@@ -19,6 +19,7 @@ public class ActiveRMService {
 
   private final List<URI> rmUrls;
   private final Map<URI, JSONObject> statuses = new HashMap<>();
+  private long lastRefresh = 0;
 
 
   public ActiveRMService(YayuConfig yayuConfig) {
@@ -32,6 +33,10 @@ public class ActiveRMService {
   }
 
   public void refresh() {
+    if (System.currentTimeMillis() - lastRefresh < 10_000) {
+      return;
+    }
+    lastRefresh = System.currentTimeMillis();
     for (URI rmUrl : rmUrls) {
       try {
         statuses.put(rmUrl, WebClient

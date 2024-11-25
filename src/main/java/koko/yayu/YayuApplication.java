@@ -2,13 +2,10 @@ package koko.yayu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @SpringBootApplication
-@EnableScheduling
+@ServletComponentScan  // Enable the use of @WebFilter
 public class YayuApplication {
 
   public static void main(String[] args) {

@@ -10,33 +10,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class RestApiService extends AbstractApiService {
 
-  private JSONObject scheduler;
-  private List<JSONObject> nodes;
-  private List<JSONObject> apps;
-
   public RestApiService(YayuConfig config) {
     super(config.getMrUrl(), "/ws/v1/", 16);
   }
 
-  public void refresh() {
-    scheduler = get("cluster/scheduler",
-      YayuUtil.jsonObjectMapper("scheduler", "schedulerInfo"));
-    nodes = get("cluster/nodes",
-      YayuUtil.jsonListMapper("nodes", "node"));
-    apps = get("cluster/apps",
-      YayuUtil.jsonListMapper("apps", "app"));
-  }
-
   public JSONObject getScheduler() {
-    return scheduler;
+    return get("cluster/scheduler",
+      YayuUtil.jsonObjectMapper("scheduler", "schedulerInfo"));
   }
 
   public List<JSONObject> getNodes() {
-    return nodes;
+    return get("cluster/nodes",
+      YayuUtil.jsonListMapper("nodes", "node"));
   }
 
   public List<JSONObject> getApps() {
-    return apps;
+    return get("cluster/apps",
+      YayuUtil.jsonListMapper("apps", "app"));
   }
 
   public JSONObject getApp(String appId) {

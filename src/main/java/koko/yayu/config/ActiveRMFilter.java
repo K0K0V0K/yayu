@@ -1,18 +1,24 @@
-package koko.yayu.service;
+package koko.yayu.config;
 
+import java.io.IOException;
+
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.annotation.WebFilter;
+import koko.yayu.service.ActiveRMService;
 import koko.yayu.service.apiservice.NativeApiService;
 import koko.yayu.service.apiservice.RestApiService;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 
-@Service
-public class MonitorService {
-
+@WebFilter("/*")
+public class ActiveRMFilter implements Filter {
   private final ActiveRMService activeRMService;
   private final RestApiService restApiService;
   private final NativeApiService nativeApiService;
 
-  public MonitorService(
+  public ActiveRMFilter(
     ActiveRMService activeRMService,
     RestApiService restApiService,
     NativeApiService nativeApiService
@@ -22,11 +28,12 @@ public class MonitorService {
     this.nativeApiService = nativeApiService;
   }
 
-  @Scheduled(fixedRate = 1000)
-  private void poll() {
+  @Override
+  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    throws IOException, ServletException {
     activeRMService.refresh();
     restApiService.setActive(activeRMService.getActive());
     nativeApiService.setActive(activeRMService.getActive());
-    restApiService.refresh();
+    chain.doFilter(request, response);
   }
 }
