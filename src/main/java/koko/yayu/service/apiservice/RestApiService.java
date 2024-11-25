@@ -2,7 +2,11 @@ package koko.yayu.service.apiservice;
 
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import koko.yayu.config.YayuConfig;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
@@ -11,13 +15,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class RestApiService extends AbstractApiService {
 
+  LoadingCache<URI, JSONObject> clusterInfoCache = CacheBuilder.newBuilder()
+    .expireAfterWrite(10, TimeUnit.SECONDS)
+    .build(CacheLoader.from(uri ->
+      get(uri, "cluster", YayuUtil.jsonObjectMapper("clusterInfo"))));
+
   public RestApiService(YayuConfig config) {
     super(config.getMrUrl(), "/ws/v1/", 16);
   }
 
   public JSONObject getClusterInfo(URI uri) {
-    return get(uri, "cluster",
-      YayuUtil.jsonObjectMapper("clusterInfo"));
+    return clusterInfoCache.getUnchecked(uri);
   }
 
   public JSONObject getClusterUser() {
