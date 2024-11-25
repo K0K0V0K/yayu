@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import koko.yayu.util.WebClientFactory;
+import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.http.MediaType;
@@ -42,6 +43,7 @@ public class AbstractApiService {
       .get()
       .uri(path)
       .accept(MediaType.APPLICATION_XML)
+      .cookie("hadoop.auth", YayuUtil.getAuthToken())
       .retrieve()
       .bodyToMono(String.class)
       .map(XML::toJSONObject)

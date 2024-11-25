@@ -1,5 +1,6 @@
 package koko.yayu.util;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -8,9 +9,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import jakarta.servlet.http.Cookie;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 public class YayuUtil {
 
@@ -55,6 +59,18 @@ public class YayuUtil {
     return IntStream.range(0, jsonArray.length())
       .mapToObj(jsonArray::getJSONObject)
       .collect(Collectors.toList());
+  }
+
+  public static String getAuthToken() {
+    ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+    if (attributes == null) {
+      return "";
+    }
+    return Arrays.stream(attributes.getRequest().getCookies())
+      .filter(cookie -> cookie.getName().equals("hadoop.auth"))
+      .findFirst()
+      .map(Cookie::getValue)
+      .orElse("");
   }
 
   public static List<JSONObject> order(String order, List<JSONObject> list) {

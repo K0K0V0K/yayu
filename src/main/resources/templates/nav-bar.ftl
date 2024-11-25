@@ -37,6 +37,9 @@
 
         <div class="navbar-end">
             <div class="navbar-item">
+                <b>User:</b> ${user.requestedUser}
+            </div>
+            <div class="navbar-item">
                 <b>Version:</b> ${clusterInfo.resourceManagerVersion}
             </div>
             <div class="navbar-item">

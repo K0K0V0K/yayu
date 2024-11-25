@@ -20,6 +20,11 @@ public class RestApiService extends AbstractApiService {
       YayuUtil.jsonObjectMapper("clusterInfo"));
   }
 
+  public JSONObject getClusterUser() {
+    return get("cluster/userinfo",
+      YayuUtil.jsonObjectMapper("clusterUserInfo"));
+  }
+
   public JSONObject getScheduler() {
     return get("cluster/scheduler",
       YayuUtil.jsonObjectMapper("scheduler", "schedulerInfo"));
