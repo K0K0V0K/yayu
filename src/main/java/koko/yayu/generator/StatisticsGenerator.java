@@ -22,7 +22,7 @@ public class StatisticsGenerator {
         jsonObject -> jsonObject.getString(property)
         )).entrySet().stream().map(
           entry -> Pair.of(entry.getKey(), entry.getValue().size()))
-        .sorted(Map.Entry.comparingByValue())
+        .sorted((o1, o2) -> o2.getRight().compareTo(o1.getRight()))
         .limit(size)
         .toList();
   }
