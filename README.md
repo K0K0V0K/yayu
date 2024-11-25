@@ -53,7 +53,7 @@ Why is this important?
 **Fewer Dependencies = Easier Maintenance**: Less code to manage and fewer opportunities for vulnerabilities.
 **Highly Trusted Libraries**:
 - **Spring**: Likely to outlive most other frameworks.
-- **Apache Commons and org.json**: Rock-solid libraries trusted by the developer community.
+- **Apache Commons, org.json and Guava**: Rock-solid libraries trusted by the developer community.
 - **Freemarker**: Good old templating engine under maintenance of Apache community.
 - Minimal UI Framework: Using **Bulma.css**, a lightweight and JavaScript-free CSS framework with ~50k GitHub stars, ensures a clean, modern design without unnecessary complexity.
 
