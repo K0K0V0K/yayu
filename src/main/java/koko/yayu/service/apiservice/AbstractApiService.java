@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import koko.yayu.util.WebClientFactory;
 import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.http.MediaType;
@@ -16,18 +17,11 @@ public class AbstractApiService {
 
   private URI active;
 
-  private final Map<URI, WebClient> clients = new HashMap<>();
+  protected final Map<URI, WebClient> clients = new HashMap<>();
 
   public AbstractApiService(List<String> urls, String basePath,  int maxInMemorySize) {
     for (String rawUrl : urls) {
-      URI uri = URI.create(rawUrl);
-      clients.put(uri, WebClient.builder()
-        .baseUrl(uri + basePath)
-        .exchangeStrategies(
-          ExchangeStrategies.builder()
-            .codecs(configurer ->
-              configurer.defaultCodecs().maxInMemorySize(maxInMemorySize * 1024 * 1024)).build())
-        .build());
+      clients.put(URI.create(rawUrl), WebClientFactory.createWebClient(rawUrl + basePath, maxInMemorySize));
     }
   }
 
@@ -40,7 +34,11 @@ public class AbstractApiService {
   }
 
   public <T> T get(String path, Function<JSONObject, T> map) {
-    return clients.get(active)
+    return get(active, path, map);
+  }
+
+  public <T> T get(URI uri, String path, Function<JSONObject, T> map) {
+    return clients.get(uri)
       .get()
       .uri(path)
       .accept(MediaType.APPLICATION_XML)

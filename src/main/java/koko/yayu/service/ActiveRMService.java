@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import koko.yayu.config.YayuConfig;
+import koko.yayu.service.apiservice.RestApiService;
+import koko.yayu.util.WebClientFactory;
 import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.http.MediaType;
@@ -20,9 +22,10 @@ public class ActiveRMService {
   private final List<URI> rmUrls;
   private final Map<URI, JSONObject> statuses = new HashMap<>();
   private long lastRefresh = 0;
+  private final RestApiService restApiService;
 
-
-  public ActiveRMService(YayuConfig yayuConfig) {
+  public ActiveRMService(YayuConfig yayuConfig, RestApiService restApiService) {
+    this.restApiService = restApiService;
     this.rmUrls = yayuConfig.getMrUrl().stream().map(url -> {
       try {
         return new URI(url);
@@ -39,20 +42,8 @@ public class ActiveRMService {
     lastRefresh = System.currentTimeMillis();
     for (URI rmUrl : rmUrls) {
       try {
-        statuses.put(rmUrl, WebClient
-          .builder()
-          .baseUrl(rmUrl.toString())
-          .build()
-          .get()
-          .uri("/ws/v1/cluster")
-          .accept(MediaType.APPLICATION_XML)
-          .retrieve()
-          .bodyToMono(String.class)
-          .map(XML::toJSONObject)
-          .map(jsonObject -> jsonObject.getJSONObject("clusterInfo"))
-          .block());
-      } catch (Exception e) {
-        //throw new RuntimeException(e);
+        statuses.put(rmUrl, restApiService.getClusterInfo(rmUrl));
+      } catch (Throwable e) {
         statuses.put(rmUrl, null);
       }
     }
