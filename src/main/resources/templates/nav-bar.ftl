@@ -1,7 +1,7 @@
 <nav class="navbar">
     <div class="navbar-brand">
         <figure class="image is-96x96 is-2by1">
-            <img src="/logo.png" alt="Logo">
+            <img src="/logo.webp" alt="Logo">
         </figure>
     </div>
 
