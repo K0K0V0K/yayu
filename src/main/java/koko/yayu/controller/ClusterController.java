@@ -23,7 +23,6 @@ public class ClusterController {
   @GetMapping("/cluster")
   public String cluster(Model model) {
     Map<URI, JSONObject> statuses = activeRMService.getAllStatuses();
-    System.err.println(statuses);
     model.addAttribute("rms", activeRMService.getAllStatuses().entrySet().stream()
       .map(entry -> entry.getValue() == null
         ? crtOffline(entry.getKey())
