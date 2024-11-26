@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import koko.yayu.generator.ComponentGenerator;
 import koko.yayu.service.apiservice.RestApiService;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
@@ -46,8 +47,73 @@ public class QueueController {
       .filter(queue -> queuePath.equals(queue.getString("queuePath")))
       .findFirst()
       .orElseThrow(() -> new RuntimeException("queue not found"));
-    model.addAttribute("props", found);
-    return "details";
+
+    model.addAttribute("am", ComponentGenerator.create()
+      .setTitle("AM Limits")
+      .addField("/AMResourceLimit/memory", "AM Memory Limit")
+      .addField("/AMResourceLimit/vCores", "AM vCore Limit")
+      .addField("/userAMResourceLimit/memory", "User AM Memory Limit")
+      .addField("/userAMResourceLimit/vCores", "User AM vCore Limit")
+      .addField("/usedAMResource/memory", "Used AM memory")
+      .addField("/usedAMResource/vCores", "Used AM vCore")
+      .generate(found)
+    );
+
+    model.addAttribute("capacity", ComponentGenerator.create()
+      .setTitle("Capacity")
+      .addField("/absoluteCapacity")
+      .addField("/absoluteMaxCapacity")
+      .addField("/absoluteUsedCapacity")
+      .addField("/usedCapacity")
+      .addField("/maxCapacity")
+      .generate(found)
+    );
+
+    model.addAttribute("config", ComponentGenerator.create()
+      .setTitle("Config")
+      .addField("/autoCreateChildQueueEnabled")
+      .addField("/autoCreationEligibility")
+      .addField("/configuredMaxAMResourceLimit")
+      .addField("/creationMethod")
+      .addField("/defaultPriority")
+      .addField("/hideReservationQueues")
+      .addField("/intraQueuePreemptionDisabled")
+      .addField("/isAbsoluteResource")
+      .addField("/isAutoCreatedLeafQueue")
+      .addField("/maxApplications")
+      .addField("/maxApplicationsPerUser")
+      .addField("/maxApplications")
+      .addField("/maxParallelApps")
+      .addField("/mode")
+      .addField("/orderingPolicyInfo")
+      .addField("/preemptionDisabled")
+      .addField("/queueType")
+      .addField("/userLimit")
+      .addField("/userLimitFactor")
+      .generate(found)
+    );
+
+    model.addAttribute("acls", ComponentGenerator.create()
+      .setTitle("ACLs")
+      .addField("/accessType")
+      .addField("/accessControlList")
+      .generate(YayuUtil.mapJsonList(found, "queueAcls", "queueAcl"))
+    );
+
+    model.addAttribute("state", ComponentGenerator.create()
+      .setTitle("State")
+      .addField("/allocatedContainers")
+      .addField("/children")
+      .addField("/numActiveApplications")
+      .addField("/numApplications")
+      .addField("/numContainers")
+      .addField("/pendingContainers")
+      .addField("/reservedContainers")
+      .addField("/state")
+      .generate(found)
+    );
+
+    return "queue-details";
   }
 
   public Stream<JSONObject> flatten(List<JSONObject> queues) {
