@@ -1,9 +1,7 @@
 package koko.yayu.config;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import freemarker.template.TemplateMethodModelEx;
 import koko.yayu.freemarker.AppStateMethod;
 import koko.yayu.freemarker.DetailsMethod;
 import koko.yayu.freemarker.HaStateMethod;
