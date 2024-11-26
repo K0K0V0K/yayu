@@ -9,12 +9,8 @@ import java.util.stream.Collectors;
 
 import koko.yayu.config.YayuConfig;
 import koko.yayu.service.apiservice.RestApiService;
-import koko.yayu.util.WebClientFactory;
 import org.json.JSONObject;
-import org.json.XML;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 public class ActiveRMService {
@@ -58,6 +54,10 @@ public class ActiveRMService {
 
   public JSONObject getActiveStatus() {
     return statuses.get(getActive());
+  }
+
+  public Map<URI, JSONObject> getAllStatuses() {
+    return statuses;
   }
 
   public Map<URI, String> getStatuses() {

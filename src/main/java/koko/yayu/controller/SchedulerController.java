@@ -24,7 +24,6 @@ public class SchedulerController {
 
     model.addAttribute("info", ComponentGenerator.create()
       .setTitle("Scheduler")
-      .setColor("is-link")
       .addField("/capacity")
       .addField("/usedCapacity")
       .addField("/maxCapacity")
@@ -34,7 +33,6 @@ public class SchedulerController {
 
     model.addAttribute("healthRun", ComponentGenerator.create()
       .setTitle("Health - Last Run Details")
-      .setColor("is-danger")
       .addField("/operation")
       .addField("/count")
       .addField("/resources/memory", "Memory")
@@ -44,7 +42,6 @@ public class SchedulerController {
 
     model.addAttribute("healthInfo", ComponentGenerator.create()
       .setTitle("Health - Operation Info")
-      .setColor("is-danger")
       .addField("/operation")
       .addField("/containerId")
       .addField("/nodeId")
@@ -54,7 +51,6 @@ public class SchedulerController {
 
     model.addAttribute("partitions", ComponentGenerator.create()
       .setTitle("Partitions")
-      .setColor("is-info")
       .addField("/partitionName")
       .addField("/capacity")
       .addField("/usedCapacity")
@@ -69,7 +65,6 @@ public class SchedulerController {
 
     model.addAttribute("capacityVector", ComponentGenerator.create()
       .setTitle("Queue Capacity Vector Info")
-      .setColor("is-success")
       .addField("/resourceName")
       .addField("/resourceValue")
       .generate(YayuUtil.mapJsonList(resp, "queueCapacityVectorInfo", "capacityVectorEntries"))
@@ -77,7 +72,6 @@ public class SchedulerController {
 
     model.addAttribute("acls", ComponentGenerator.create()
       .setTitle("ACLs")
-      .setColor("is-success")
       .addField("/accessType")
       .addField("/accessControlList")
       .generate(YayuUtil.mapJsonList(resp, "queueAcls", "queueAcl"))

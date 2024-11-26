@@ -8,7 +8,7 @@
 <#include "nav-bar.ftl">
 <div class="columns">
     <div class="column is-10 is-offset-1">
-        <article class="panel is-danger">
+        <article class="panel is-primary">
             <p class="panel-heading">Config</p>
             <a class="panel-block">
                 <div class="content is-clipped">

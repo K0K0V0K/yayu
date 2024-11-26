@@ -21,6 +21,9 @@
 
 Well, this is **Yet Another YARN UI** for the Hadoop YARN Resource Manager following the original UI (introduced in **2013**) and UI2 (introduced in **2015**).
 
+![index.html](./doc/screen-1.png)
+
+
 # But why?
 
 The existing UIs are outdated, relying on older technologies such as:

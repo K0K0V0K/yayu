@@ -52,7 +52,6 @@ public class AppController {
 
     model.addAttribute("info", ComponentGenerator.create()
       .setTitle("Info - " + appId)
-      .setColor("is-info")
       .addField( "/applicationType")
       .addField( "/name")
       .addField( "/applicationTags")
@@ -67,7 +66,6 @@ public class AppController {
 
     model.addAttribute("capacity", ComponentGenerator.create()
       .setTitle("Capacity")
-      .setColor("is-info")
       .addField("/allocatedMB")
       .addField("/allocatedVCores")
       .addField("/memorySeconds")

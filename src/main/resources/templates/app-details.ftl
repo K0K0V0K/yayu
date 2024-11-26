@@ -32,7 +32,7 @@
 
 <div class="columns">
     <div class="column is-10  is-offset-1">
-        <article class="panel is-danger">
+        <article class="panel is-primary">
             <p class="panel-heading">Attempts</p>
             <a class="panel-block">
                 <table class="table">

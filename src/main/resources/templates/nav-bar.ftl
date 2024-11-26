@@ -47,7 +47,7 @@
             </div>
             <div class="navbar-item">
                 <#list haStatuses as url, state>
-                    ${haState(url, state)}
+                    <a href="/cluster">${haState(url, state)}</a>
                 </#list>
             </div>
         </div>
