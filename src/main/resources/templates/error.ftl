@@ -5,7 +5,13 @@
     <link href="/bulma.min.css" rel="stylesheet">
 </head>
 <body>
-<h1>ERROR: ${exception}</h1>
-${trace}
+<section class="hero is-danger is-fullheight">
+    <div class="hero-body">
+        <div class="">
+            <p class="title">ERROR: ${exception}</p>
+            <p class="subtitle">${trace}</p>
+        </div>
+    </div>
+</section>
 </body>
 </html>
