@@ -12,6 +12,7 @@ import koko.yayu.config.FreeMarkerConfig;
 import org.json.JSONObject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.text.WordUtils;
 
 public class ComponentGenerator {
@@ -63,21 +64,22 @@ public class ComponentGenerator {
   }
 
   public String generate(JSONObject data) {
-    String re = String.format("<article class=\"panel %s\">\n", color);
-    re += String.format("<div class=\"panel-heading\">%s</div>\n", title);
+    String re = "<article class=\"message\"><div class=\"message-header\"><p>"
+      + title
+      + "</p></div><div class=\"message-body\"><table class=\"table is-striped is-fullwidth\">";
     for (Map.Entry<String, String> field : displayNames.entrySet()) {
-      re += String.format("<a class=\"panel-block\">%s: %s</a>\n",
+      re += String.format("<tr><td>%s</td><td>%s</td></tr>\n",
         field.getValue(), getValue(data, field.getKey()));
     }
-    re += "</article>\n";
+    re += "</table></div></article>";
     return re;
   }
 
   public String generate(List<JSONObject> data) {
-    String re = String.format("<article class=\"panel %s\">\n", color);
-    re += String.format("<div class=\"panel-heading\">%s</div>\n", title);
-    re += "<a class=\"panel-block\">";
-    re += "<table class=\"table\"><thead><tr>\n";
+    String re = "<article class=\"message\"><div class=\"message-header\"><p>"
+      + title
+      + "</p></div><div class=\"message-body\">"
+      + "<table class=\"table is-striped is-fullwidth\"><thead><tr>";
     for (Map.Entry<String, String> field : displayNames.entrySet()) {
       re += String.format("<th>%s</th>\n", field.getValue());
     }
@@ -89,7 +91,7 @@ public class ComponentGenerator {
       }
       re += "</tr>\n";
     }
-    re += "</tbody></table></a></article>\n";
+    re += "</tbody></table></div></article>\n";
     return re;
   }
 
