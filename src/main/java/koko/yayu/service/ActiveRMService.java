@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import koko.yayu.config.YayuConfig;
+import koko.yayu.exception.YayuException;
 import koko.yayu.service.apiservice.RestApiService;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,9 @@ public class ActiveRMService {
     return statuses.entrySet().stream()
       .filter(entry -> entry.getValue() != null)
       .filter(entry -> "ACTIVE".equals(entry.getValue().getString("haState")))
-      .findFirst().orElseThrow(RuntimeException::new).getKey();
+      .findFirst()
+      .orElseThrow(() -> new YayuException("No active RM found in " + rmUrls))
+      .getKey();
   }
 
   public JSONObject getActiveStatus() {
