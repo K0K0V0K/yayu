@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import koko.yayu.generator.ComponentGenerator;
 import koko.yayu.generator.StatisticsGenerator;
+import koko.yayu.generator.TableGenerator;
 import koko.yayu.service.apiservice.RestApiService;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
@@ -28,11 +29,11 @@ public class AppController {
   @GetMapping("/")
   public String index(Model model, @RequestParam(defaultValue = "") String order) {
     List<JSONObject> resp = restApiService.getApps();
-    YayuUtil.order(order, resp);
-    model.addAttribute("apps", resp);
+
     Map<String, Long> counts = resp.stream().collect(Collectors.groupingBy(
       jsonObject -> jsonObject.getString("state"),
       Collectors.counting()));
+    model.addAttribute("counts", new TreeMap<>(counts));
 
     model.addAttribute("topUser",
       new StatisticsGenerator("User", 5, "user", resp).generate());
@@ -41,7 +42,17 @@ public class AppController {
     model.addAttribute("topAppType",
       new StatisticsGenerator("Application Type", 5, "applicationType", resp).generate());
 
-    model.addAttribute("counts", new TreeMap<>(counts));
+    model.addAttribute("table", new TableGenerator()
+      .addField("/id", "Id", "linktag#app")
+      .addField("/applicationType", "Type")
+      .addField("/name")
+      .addField("/user")
+      .addField("/state", "State", "appState")
+      .addField("/queue")
+      .addField("/progress", "Progress", "progress")
+      .addField("/startedTime", "Start", "time")
+      .generate(resp, order));
+
     return "index";
   }
 

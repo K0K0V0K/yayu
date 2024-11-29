@@ -18,7 +18,6 @@ import org.apache.commons.text.WordUtils;
 public class ComponentGenerator {
 
   private String title;
-  private String color = "is-primary";
   private final Map<String, String> displayNames = new LinkedHashMap<>();
   private final Map<String, TemplateMethodModelEx> propertyMappers = new HashMap<>();
 
@@ -28,11 +27,6 @@ public class ComponentGenerator {
 
   public ComponentGenerator setTitle(String title) {
     this.title = title;
-    return this;
-  }
-
-  public ComponentGenerator setColor(String color) {
-    this.color = color;
     return this;
   }
 

@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import koko.yayu.config.YayuConfig;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
@@ -24,6 +26,11 @@ public class RestApiService extends AbstractApiService {
     .expireAfterWrite(15, TimeUnit.MINUTES)
     .build(CacheLoader.from(token ->
       get("cluster/userinfo", YayuUtil.jsonObjectMapper("clusterUserInfo"))));
+
+  LoadingCache<String, List<JSONObject>> appsCache = CacheBuilder.newBuilder()
+    .expireAfterAccess(10, TimeUnit.SECONDS)
+    .build(CacheLoader.from(token ->
+      get("cluster/apps", YayuUtil.jsonListMapper("apps", "app"))));
 
   public RestApiService(YayuConfig config) {
     super(config.getMrUrl(), "/ws/v1/", 16);
@@ -48,8 +55,7 @@ public class RestApiService extends AbstractApiService {
   }
 
   public List<JSONObject> getApps() {
-    return get("cluster/apps",
-      YayuUtil.jsonListMapper("apps", "app"));
+    return appsCache.getUnchecked(YayuUtil.getAuthToken());
   }
 
   public JSONObject getApp(String appId) {
