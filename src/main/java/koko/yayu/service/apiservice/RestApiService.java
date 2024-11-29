@@ -1,6 +1,7 @@
 package koko.yayu.service.apiservice;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -10,6 +11,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import koko.yayu.config.YayuConfig;
+import koko.yayu.util.YayuCache;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -22,20 +24,14 @@ public class RestApiService extends AbstractApiService {
     .build(CacheLoader.from(uri ->
       get(uri, "cluster", YayuUtil.jsonObjectMapper("clusterInfo"))));
 
-  LoadingCache<String, JSONObject> clusterUserCache = CacheBuilder.newBuilder()
-    .expireAfterWrite(15, TimeUnit.MINUTES)
-    .build(CacheLoader.from(token ->
-      get("cluster/userinfo", YayuUtil.jsonObjectMapper("clusterUserInfo"))));
+  YayuCache<JSONObject> clusterUserCache = new YayuCache<>(Duration.ofMinutes(15), 1,
+    () -> get("cluster/userinfo", YayuUtil.jsonObjectMapper("clusterUserInfo")));
 
-  LoadingCache<String, List<JSONObject>> appsCache = CacheBuilder.newBuilder()
-    .expireAfterAccess(10, TimeUnit.SECONDS)
-    .build(CacheLoader.from(token ->
-      get("cluster/apps", YayuUtil.jsonListMapper("apps", "app"))));
+  YayuCache<List<JSONObject>> appsCache = new YayuCache<>(Duration.ofSeconds(10), 6,
+    () -> get("cluster/apps", YayuUtil.jsonListMapper("apps", "app")));
 
-  LoadingCache<String, JSONObject> schedulerCache = CacheBuilder.newBuilder()
-    .expireAfterAccess(10, TimeUnit.SECONDS)
-    .build(CacheLoader.from(token ->
-      get("cluster/scheduler", YayuUtil.jsonObjectMapper("scheduler", "schedulerInfo"))));
+  YayuCache<JSONObject> schedulerCache = new YayuCache<>(Duration.ofSeconds(10), 6,
+    () -> get("cluster/scheduler", YayuUtil.jsonObjectMapper("scheduler", "schedulerInfo")));
 
   public RestApiService(YayuConfig config) {
     super(config.getMrUrl(), "/ws/v1/", 16);
@@ -46,11 +42,11 @@ public class RestApiService extends AbstractApiService {
   }
 
   public JSONObject getClusterUser() {
-    return clusterUserCache.getUnchecked(YayuUtil.getAuthToken());
+    return clusterUserCache.get();
   }
 
   public JSONObject getScheduler() {
-    return schedulerCache.getUnchecked(YayuUtil.getAuthToken());
+    return schedulerCache.get();
   }
 
   public List<JSONObject> getNodes() {
@@ -59,7 +55,7 @@ public class RestApiService extends AbstractApiService {
   }
 
   public List<JSONObject> getApps() {
-    return appsCache.getUnchecked(YayuUtil.getAuthToken());
+    return appsCache.get();
   }
 
   public JSONObject getApp(String appId) {
