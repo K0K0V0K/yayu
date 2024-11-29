@@ -32,6 +32,11 @@ public class RestApiService extends AbstractApiService {
     .build(CacheLoader.from(token ->
       get("cluster/apps", YayuUtil.jsonListMapper("apps", "app"))));
 
+  LoadingCache<String, JSONObject> schedulerCache = CacheBuilder.newBuilder()
+    .expireAfterAccess(10, TimeUnit.SECONDS)
+    .build(CacheLoader.from(token ->
+      get("cluster/scheduler", YayuUtil.jsonObjectMapper("scheduler", "schedulerInfo"))));
+
   public RestApiService(YayuConfig config) {
     super(config.getMrUrl(), "/ws/v1/", 16);
   }
@@ -45,8 +50,7 @@ public class RestApiService extends AbstractApiService {
   }
 
   public JSONObject getScheduler() {
-    return get("cluster/scheduler",
-      YayuUtil.jsonObjectMapper("scheduler", "schedulerInfo"));
+    return schedulerCache.getUnchecked(YayuUtil.getAuthToken());
   }
 
   public List<JSONObject> getNodes() {

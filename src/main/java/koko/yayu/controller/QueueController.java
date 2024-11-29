@@ -1,5 +1,6 @@
 package koko.yayu.controller;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import koko.yayu.generator.ComponentGenerator;
+import koko.yayu.generator.TableGenerator;
 import koko.yayu.service.apiservice.RestApiService;
 import koko.yayu.util.YayuUtil;
 import org.json.JSONObject;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,20 +30,27 @@ public class QueueController {
   }
 
   @GetMapping("/queues")
-  public String queues(Model model) {
+  public String queues(Model model, @RequestParam(defaultValue = "") String order) {
     JSONObject resp = restApiService.getScheduler();
     List<JSONObject> topQueues = YayuUtil.mapJsonList(resp, "queues", "queue");
-    Map<Integer, List<JSONObject>> queues = flatten(topQueues)
-      .collect(Collectors.groupingBy(queue ->
-        StringUtils.countMatches(queue.getString("queuePath"), ".")));
-    queues.values().forEach(q ->
-      q.sort(Comparator.comparing(o -> o.getString("queuePath"))));
-    model.addAttribute("queues", queues);
-    return "queues";
+    List<JSONObject> queues = new ArrayList<>(flatten(topQueues).toList());
+
+    model.addAttribute("table", TableGenerator.create()
+      .addField("/queuePath", "Queue", "linkTag#queue")
+      .addField("/absoluteUsedCapacity")
+      .addField("/absoluteCapacity")
+      .addField("/absoluteMaxCapacity")
+      .addField("/capacity")
+      .addField("/maxCapacity")
+      .addField("/children")
+      .generate(queues, order)
+    );
+
+      return "queues";
   }
 
   @GetMapping("/queue/{queuePath}")
-  public String queues(Model model, @PathVariable String queuePath) {
+  public String queue(Model model, @PathVariable String queuePath) {
     JSONObject resp = restApiService.getScheduler();
     List<JSONObject> topQueues = YayuUtil.mapJsonList(resp, "queues", "queue");
     JSONObject found = flatten(topQueues)
