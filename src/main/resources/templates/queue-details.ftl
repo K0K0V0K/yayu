@@ -9,16 +9,34 @@
 <div class="columns">
     <div class="column is-10 is-offset-1">
         <div class="columns">
-            <div class="column is-4">
+            <div class="column">
                 ${am}
                 ${acls}
             </div>
-            <div class="column is-4">
+            <div class="column">
                 ${capacity}
                 ${state}
             </div>
-            <div class="column is-4">
+            <div class="column">
                 ${config}
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                ${topUser}
+            </div>
+            <div class="column">
+                ${topQueue}
+            </div>
+            <div class="column">
+                ${topAppType}
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <div class="column is-10 is-offset-1">
+                    ${table}
+                </div>
             </div>
         </div>
     </div>

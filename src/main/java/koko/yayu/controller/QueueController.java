@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import koko.yayu.generator.ComponentGenerator;
+import koko.yayu.generator.StatisticsGenerator;
 import koko.yayu.generator.TableGenerator;
 import koko.yayu.service.apiservice.RestApiService;
 import koko.yayu.util.YayuUtil;
@@ -50,7 +51,7 @@ public class QueueController {
   }
 
   @GetMapping("/queue/{queuePath}")
-  public String queue(Model model, @PathVariable String queuePath) {
+  public String queue(Model model, @PathVariable String queuePath, @RequestParam(defaultValue = "") String order) {
     JSONObject resp = restApiService.getScheduler();
     List<JSONObject> topQueues = YayuUtil.mapJsonList(resp, "queues", "queue");
     JSONObject found = flatten(topQueues)
@@ -121,6 +122,28 @@ public class QueueController {
       .addField("/reservedContainers")
       .addField("/state")
       .generate(found)
+    );
+
+    List<JSONObject> apps = restApiService.getApps().stream()
+      .filter(app -> app.getString("queue").equals(queuePath))
+      .toList();
+
+    model.addAttribute("topUser",
+      new StatisticsGenerator("User", 5, "user", apps).generate());
+    model.addAttribute("topQueue",
+      new StatisticsGenerator("Queue", 5, "queue", apps).generate());
+    model.addAttribute("topAppType",
+      new StatisticsGenerator("Application Type", 5, "applicationType", apps).generate());
+
+    model.addAttribute("table", TableGenerator.create()
+      .addField("/id", "Id", "linkTag#app")
+      .addField("/applicationType", "Type")
+      .addField("/name")
+      .addField("/user")
+      .addField("/state", "State", "appState")
+      .addField("/progress", "Progress", "progress")
+      .addField("/startedTime", "Start", "time")
+      .generate(apps, order)
     );
 
     return "queue-details";

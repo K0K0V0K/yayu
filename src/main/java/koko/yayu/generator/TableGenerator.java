@@ -20,7 +20,7 @@ import org.apache.commons.text.WordUtils;
 public class TableGenerator {
 
   private final Map<String, String> displayNames = new LinkedHashMap<>();
-  private final Map<String, TemplateMethodModelEx> propertyMappers = new HashMap<>();
+  private final Map<String, String> propertyMappers = new HashMap<>();
 
   public static TableGenerator create() {
     return new TableGenerator();
@@ -47,12 +47,7 @@ public class TableGenerator {
     String propertyMapper
   ) {
     displayNames.put(propertyName, displayName);
-    if (propertyMapper != null) {
-      propertyMappers.put(
-        propertyName,
-        (TemplateMethodModelEx) FreeMarkerConfig.methods.get(propertyMapper)
-      );
-    }
+    propertyMappers.put(propertyName, propertyMapper);
     return this;
   }
 
@@ -101,12 +96,13 @@ public class TableGenerator {
   }
 
   private String getValue(JSONObject data, String key) {
-    String[] split = key.split("#");
-    Object re = data.query(split[0]);
-    TemplateMethodModelEx mapper = propertyMappers.get(key);
+    Object re = data.query(key);
+    String mapper = propertyMappers.get(key);
     if (mapper != null) {
       try {
-        re = mapper.exec(Stream.concat(
+        String[] split = mapper.split("#");
+        TemplateMethodModelEx method = (TemplateMethodModelEx) FreeMarkerConfig.methods.get(split[0]);
+        re = method.exec(Stream.concat(
           Stream.of(split).skip(1),
           Stream.of(re)
         ).toList());
