@@ -106,9 +106,8 @@ public class TableGenerator {
           Stream.of(split).skip(1),
           Stream.of(re)
         ).toList());
-      } catch (TemplateModelException e) {
-        throw new RuntimeException(e);
-        //TODO
+      } catch (Exception e) {
+        throw new RuntimeException("Failed to parse value for key " + key + ", value: " + mapper, e);
       }
     }
     return String.valueOf(re);

@@ -43,7 +43,7 @@ public class AppController {
       new StatisticsGenerator("Application Type", 5, "applicationType", resp).generate());
 
     model.addAttribute("table", new TableGenerator()
-      .addField("/id", "Id", "linktag#app")
+      .addField("/id", "Id", "linkTag#app")
       .addField("/applicationType", "Type")
       .addField("/name")
       .addField("/user")
